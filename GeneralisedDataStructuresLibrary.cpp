@@ -1667,19 +1667,299 @@ void DoublyLL<T> :: DeleteAtPos(
 
 ///////////////////////////////////////////////////////////////////////
 //
-//  Class :         BST (program571.c) -> .cpp -> generic
+//  Class :         BST
 //  Description :   Generic implementation of Binary Search Tree
 //  Author :        Kartik Ganesh Jare
 //
 ///////////////////////////////////////////////////////////////////////
 
-// Add code
+///////////////////////////////////////////////////////////////////////
+//
+// Structure Name : node
+// Description    : Represents node of Binary Search Tree
+// Author         : Kartik Ganesh Jare
+// Date           : 08/10/25
+//
+///////////////////////////////////////////////////////////////////////
+
+struct node
+{
+    int data;
+    struct node *lchild;
+    struct node *rchild;
+};
+
+typedef struct node NODE;
+typedef struct node * PNODE;
 
 ///////////////////////////////////////////////////////////////////////
 //
-//  Class :         Sorting generic
-//  Description :   Generic implementation of sorting algorithms
-//  Author :        Kartik Ganesh Jare
+// Class Name  : BinarySearchTree
+// Description : Implementation of Binary Search Tree with operations
+//               like Insert, Search, Traversals and Counting nodes
+// Author      : Kartik Ganesh Jare
+// Date        : 08/10/25
+//
+///////////////////////////////////////////////////////////////////////
+
+class BinarySearchTree
+{
+private:
+    PNODE first;
+
+public:
+    BinarySearchTree();
+    void Insert(PNODE*,int);
+    void Inorder(PNODE);
+    void Preorder(PNODE);
+    void Postorder(PNODE);
+    bool Search(PNODE,int);
+    int Count(PNODE);
+    int CountLeafNode(PNODE);
+    int CountParentNode(PNODE);
+};
+
+///////////////////////////////////////////////////////////////////////
+//
+// Function Name : BinarySearchTree
+// Description   : Constructor to initialise root node of BST
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+// Prototype     : BinarySearchTree()
+// Input         : None
+// Output        : None
+//
+///////////////////////////////////////////////////////////////////////
+
+BinarySearchTree::BinarySearchTree()
+{
+    first = NULL;
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+// Function Name : Insert
+// Description   : Inserts new node in Binary Search Tree
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+// Prototype     : void Insert(PNODE *first,int no)
+// Input         : Address of root node and data
+// Output        : Node inserted in BST
+//
+///////////////////////////////////////////////////////////////////////
+
+void BinarySearchTree::Insert(PNODE *first,int no)
+{
+    PNODE newn = NULL;
+    PNODE temp = NULL;
+
+    newn = new NODE;
+
+    newn->data = no;
+    newn->lchild = NULL;
+    newn->rchild = NULL;
+
+    if(*first == NULL)
+    {
+        *first = newn;
+        return;
+    }
+
+    temp = *first;
+
+    while(true)
+    {
+        if(no == temp->data)
+        {
+            cout<<"Duplicate element : Unable to insert\n";
+            delete newn;
+            return;
+        }
+        else if(no > temp->data)
+        {
+            if(temp->rchild == NULL)
+            {
+                temp->rchild = newn;
+                return;
+            }
+            temp = temp->rchild;
+        }
+        else
+        {
+            if(temp->lchild == NULL)
+            {
+                temp->lchild = newn;
+                return;
+            }
+            temp = temp->lchild;
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+// Function Name : Inorder
+// Description   : Displays BST nodes using Inorder traversal
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+// Prototype     : void Inorder(PNODE first)
+// Input         : Root node
+// Output        : Prints nodes in sorted order
+//
+///////////////////////////////////////////////////////////////////////
+
+void BinarySearchTree::Inorder(PNODE first)
+{
+    if(first != NULL)
+    {
+        Inorder(first->lchild);
+        cout<<first->data<<"\t";
+        Inorder(first->rchild);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+// Function Name : Preorder
+// Description   : Displays BST nodes using Preorder traversal
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+//
+///////////////////////////////////////////////////////////////////////
+
+void BinarySearchTree::Preorder(PNODE first)
+{
+    if(first != NULL)
+    {
+        cout<<first->data<<"\t";
+        Preorder(first->lchild);
+        Preorder(first->rchild);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+// Function Name : Postorder
+// Description   : Displays BST nodes using Postorder traversal
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+//
+///////////////////////////////////////////////////////////////////////
+
+void BinarySearchTree::Postorder(PNODE first)
+{
+    if(first != NULL)
+    {
+        Postorder(first->lchild);
+        Postorder(first->rchild);
+        cout<<first->data<<"\t";
+    }
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+// Function Name : Search
+// Description   : Searches element in Binary Search Tree
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+// Prototype     : bool Search(PNODE first,int no)
+// Input         : Root node and value to search
+// Output        : Returns true if element found otherwise false
+//
+///////////////////////////////////////////////////////////////////////
+
+bool BinarySearchTree::Search(PNODE first,int no)
+{
+    int TimeComplexity = 0;
+
+    while(first != NULL)
+    {
+        if(no == first->data)
+        {
+            cout<<"Time complexity of search : "<<TimeComplexity<<endl;
+            return true;
+        }
+        else if(no > first->data)
+        {
+            first = first->rchild;
+        }
+        else
+        {
+            first = first->lchild;
+        }
+        TimeComplexity++;
+    }
+
+    cout<<"Time complexity of search : "<<TimeComplexity<<endl;
+    return false;
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+// Function Name : Count
+// Description   : Counts total nodes in BST
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+//
+///////////////////////////////////////////////////////////////////////
+
+int BinarySearchTree::Count(PNODE first)
+{
+    if(first == NULL)
+        return 0;
+
+    return 1 + Count(first->lchild) + Count(first->rchild);
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+// Function Name : CountLeafNode
+// Description   : Counts total leaf nodes in BST
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+//
+///////////////////////////////////////////////////////////////////////
+
+int BinarySearchTree::CountLeafNode(PNODE first)
+{
+    if(first == NULL)
+        return 0;
+
+    if(first->lchild == NULL && first->rchild == NULL)
+        return 1;
+
+    return CountLeafNode(first->lchild) + CountLeafNode(first->rchild);
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+// Function Name : CountParentNode
+// Description   : Counts nodes having atleast one child
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+//
+///////////////////////////////////////////////////////////////////////
+
+int BinarySearchTree::CountParentNode(PNODE first)
+{
+    if(first == NULL)
+        return 0;
+
+    int count = 0;
+
+    if(first->lchild != NULL || first->rchild != NULL)
+        count = 1;
+
+    return count + CountParentNode(first->lchild) + CountParentNode(first->rchild);
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+// Class Name  : SortingX
+// Description : Generic implementation of sorting algorithms like
+//               Bubble Sort, Selection Sort and Insertion Sort
+// Author      : Kartik Ganesh Jare
+// Date        : 08/07/25
 //
 ///////////////////////////////////////////////////////////////////////
 
@@ -1695,7 +1975,6 @@ class SortingX    // Increasing
         ~SortingX();
         void Accept();
         void Display();
-        void BubbleSort();
         void BubbleSort();
         void BubbleSortEfficient();
         void SelectionSort();
@@ -1952,9 +2231,11 @@ void SortingX<T>::InsertionSort()
 
 ///////////////////////////////////////////////////////////////////////
 //
-//  Class :         Searching generic
-//  Description :   Generic implementation of searching algorithms
-//  Author :        Kartik Ganesh Jare
+// Class Name  : SearchingX
+// Description : Generic implementation of searching algorithms like
+//               Linear Search, Binary Search and Bidirectional Search
+// Author      : Kartik Ganesh Jare
+// Date        : 30/09/25
 //
 ///////////////////////////////////////////////////////////////////////
 
@@ -2402,8 +2683,16 @@ bool SearchingX<T>::CheckSortedDec()
 }
 
 ///////////////////////////////////////////////////////////////////////
-// Assignment no 34,35,36 functions -> C++ -> Generic
-// Write all functions logic in all types of Linked List
+//
+// Function Name : main
+// Description   : Entry point of program. Used to test all generic
+//                 data structure and algorithm classes
+// Author        : Kartik Ganesh Jare
+// Date          : 08/10/25
+// Prototype     : int main()
+// Input         : None
+// Output        : Returns 0 to OS
+//
 ///////////////////////////////////////////////////////////////////////
 
 int main()
